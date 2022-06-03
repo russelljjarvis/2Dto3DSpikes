@@ -8,6 +8,6 @@ Others goals of this repository:
 * 1 compute the Kreutz spike distance.
 * **2 Map 2D spike events (biological spike raster plots) to 3D raster plots that look like 3D event based camera spike events.** 
 
-![1millionspikes.png](1millionspikes.png)
+<!-- [1millionspikes.png](1millionspikes.png) -->
 
 
