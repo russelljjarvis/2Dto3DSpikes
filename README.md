@@ -26,5 +26,12 @@ Pkg.add(url="https://github.com/lindermanlab/PPSeq.jl")
 All other missing packages can be installed in a similar manner
 Most often missing packages are registered.
 
+For example 
+
+```
+] add Plots.jl
+```
+Installs the registered Julia package plots.
+
 Ultimately this project will need a Project.toml file this is analogous to a 
 python requirements.txt file
