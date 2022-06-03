@@ -5,5 +5,17 @@ The intention was to apply existing dimensionality reduction techniques to reduc
 
 Another goal of this repository was to compute the Kreutz spike distance.
 
+# Getting started. If Julia is installed.
 
-aimed at
+```
+julia
+```
+At the prompt hit ] to enter julia's package mode:
+```
+] add https://github.com/lindermanlab/PPSeq.jl
+```
+This is short hand for
+```
+using Pkg
+Pkg.add(url="https://github.com/lindermanlab/PPSeq.jl")
+```
