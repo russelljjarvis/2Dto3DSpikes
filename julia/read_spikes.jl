@@ -12,12 +12,11 @@ using DataFrames
 import PPSeq
 const seq = PPSeq
 
-import NeuroAnalysis.plotspiketrain
-
 fuction dontcallthis()
     """
     wrapped code, not meant for normal execution.
     """
+    import NeuroAnalysis.plotspiketrain
     using Pkg
     ENV["PYTHON"] = "/home/user/miniconda3/bin/python"           # example for *nix
     Pkg.build("PyCall")
