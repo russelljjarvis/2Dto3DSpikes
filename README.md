@@ -1,3 +1,5 @@
+# 2Dto3D spike re-organization and transformation.
+
 This is code does not do anything useful yet, its a collection of loosely related large scale spike train analysis techinques applied in Julia and Python.
 
 The original intention was to apply existing dimensionality reduction techniques to reduce the size of >1million cell spike trains down to something useful. The code here does not do that yet, and may not do it ever.
