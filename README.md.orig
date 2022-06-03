@@ -8,6 +8,11 @@ Others goals of this repository:
 * 1 compute the Kreutz spike distance.
 * **2 Map 2D spike events (biological spike raster plots) to 3D raster plots that look like 3D event based camera spike events.** 
 
+<!-- [1millionspikes.png](1millionspikes.png) -->
+
+# Getting started. If Julia is installed.
+
+<<<<<<< HEAD
 ```
 julia
 ```
@@ -20,9 +25,5 @@ This is short hand for
 using Pkg
 Pkg.add(url="https://github.com/lindermanlab/PPSeq.jl")
 ```
-
-All other missing packages can be installed in a similar manner
-Most often missing packages are registered.
-
-Ultimately this project will need a Project.toml file this is analogous to a 
-python requirements.txt file
+=======
+>>>>>>> f2c9dee3ddf7462c3a72779a2ba011684f865b83
