@@ -1,61 +1,30 @@
 
-#using DelimitedFiles
 using Revise
-#import PyPlot: plt
 import DelimitedFiles: readdlm
 import Random
 using ProgressMeter
-#import StatsBase: quantile
-ENV["JULIA_LOAD_PATH"]="/home/user/git/CoTETE.jl/src/"
-#run(`bash "export JULIA_LOAD_PATH=:/home/user/git/CoTETE.jl/src/"`)
-
-using CoTETE
-
-
 using OnlinePCA
 using OnlinePCA: readcsv, writecsv
 using Distributions
 using DelimitedFiles
 using SpikeSynchrony
 using DataFrames
-
-import NeuroAnalysis.plotspiketrain
-#using Pkg
-#ENV["PYTHON"] = "/home/user/miniconda3/bin/python"           # example for *nix
-#Pkg.build("PyCall")
-#using PyCall
 import PPSeq
 const seq = PPSeq
 
-#using Plots
-#open("7d933154b27ff70fc2df9ed8bec39480-spikes-00001-0.gdf") do file
-    # do stuff with the open file
-#end
-#using PyCall
-#=
-@show(spkd0)
-maxi0 = size(spkd0)[1]#[2]
-maxi1 = size(spkd_found)[1]#[2]
-@show(maxi0)
-mini = findmin([maxi0, maxi1])[1]#[1]
-@show(mini)
-spkd = ones(mini)
-maxi = findmax([maxi0, maxi1])[1]#[1]
-@show(maxi)
-if maxi > 0
-    if maxi0 != maxi1
-        return sum(ones(maxi))
+import NeuroAnalysis.plotspiketrain
 
-    end
-    if isempty(spkd_found[1, :])
-        return sum(ones(maxi))
-    end
+fuction dontcallthis()
+    """
+    wrapped code, not meant for normal execution.
+    """
+    using Pkg
+    ENV["PYTHON"] = "/home/user/miniconda3/bin/python"           # example for *nix
+    Pkg.build("PyCall")
+    using PyCall
 end
-=#
 
-function raster_difference(spkd0, spkd_found)
-    #spkd = ones(mini)
-    #@inbounds for i in eachindex(spkd)
+function spike_train_diff(spkd0, spkd_found)
     if !isempty(spkd0) && !isempty(spkd_found)
         maxt1 = findmax(spkd0)[1]
         maxt2 = findmax(spkd_found)[1]
@@ -70,52 +39,45 @@ function raster_difference(spkd0, spkd_found)
             spkd = SpikeSynchrony.trapezoid_integral(t, S) / (t[end] - t[1])
         end
     end
-    #end
-    spkd
+    spkd # this is the same as return spkd
 end
 
 
 
-@time spike_mat = readdlm("7d933154b27ff70fc2df9ed8bec39480-spikes-00001-0.gdf", '\t', Any, '\n')
-@time spike_mat_ = spike_mat[:,1:2]
-@time spike_mat = spike_mat_[1:1000000]
-@time spike_mat = spike_mat_[1:1975]
+spike_mat = readdlm("7d933154b27ff70fc2df9ed8bec39480-spikes-00001-0.gdf", '\t', Any, '\n')
+spike_mat_ = spike_mat[:,1:2]
+#@time spike_mat = spike_mat_[1:1000000]
+spike_mat = spike_mat_[1:1975]
 
 temp = [i for (indi,i) in enumerate(spike_mat_)]
-#mat0 = raster_difference.(temp', temp)
-#mat1 = raster_difference.(temp, temp')
-#@show(mat0)
-#@show(mat1)
-#a = [(indi,i) for (indi,i) in enumerate(spike_mat) ]
+#mat0 = spike_train_diff.(temp', temp)
+#mat1 = spike_train_diff.(temp, temp')
 
+# for plotting vertically concatone spike_matrix
+# into whole matrix.
 whole_mat = reduce(vcat, spike_mat)
 
-#tmp = mktempdir()
-#writecsv(joinpath(tmp, "Data.csv"), spike_mat)
-# Binarization
-#csv2bin(csvfile=joinpath(tmp, "Data.csv"), binfile=joinpath(tmp, "Data.zst"))
-# Summary of data
-#sumr(binfile=joinpath(tmp, "Data.zst"), outdir=tmp)
-
-#@time plotspiketrain(whole_mat)|>display
-#input=joinpath(tmp, "Data.zst")
-#@time plotspiketrain(input)|>display
-
-#using PlotlyJS
-# Other Imports
-
-# Songbird metadata
-#num_neurons = Float64(sizeof(whole_mat))
-
 # Load spikes.
-spikes = seq.Spike[]
+
 num_neurons = size(spike_mat)[1]
-_p = Random.randperm(num_neurons)
-#global max_time = 0
-spike_dict = Dict()
+
+
 function read_file(num_neurons)
+    """
+    take a global spike train variable
+
+    and convert it into a list of weird struct types:
+    that
+    populated dictionary of
+    keys: spike id index, values: a list of spike times.
+
+    """
+    spikes = seq.Spike[]
+    _p = Random.randperm(num_neurons)
+
+    spike_dict = Dict()
     local max_time = 0.0
-    for (n, t) in eachrow(readdlm("7d933154b27ff70fc2df9ed8bec39480-spikes-00001-0.gdf", '\t', Any, '\n'))
+    for (n, t) in eachrow(readdlm("../data/7d933154b27ff70fc2df9ed8bec39480-spikes-00001-0.gdf", '\t', Any, '\n'))
         if t > max_time
             max_time = t
         end
@@ -127,16 +89,12 @@ function read_file(num_neurons)
             push!(spikes, seq.Spike(_p[Int(n)], t))
         end
     end
-    return (spikes,max_time)
+    return (spikes,max_time,spike_dict)
 end
 (spikes,max_time) = read_file(num_neurons)
-@show(max_time)
+#@show(max_time)
 ab = []
 
-#using Distributed
-
-#function FeaturePCA()
-#end
 function get_pca(spike_dict)
     using OnlineStats
     iter_list = collect(values(Vector(Float64,spike_dict)))
@@ -152,22 +110,20 @@ function get_pca(spike_dict)
         @show(OnlineStats.variation(o))         # Get the variation (explained) "by" each eigenvector
     end
 end
-#import OnlineStats.OnlinePCA# as OnlinePCA
-#?OnlinePCA#(window,4)
 
-function speed_me(spike_dict)
+function applied_spike_diff(spike_dict)
     iter_list = collect(values(spike_dict))
     iter_req = size(iter_list)[1]^2
     p = Progress(iter_req, 1)
     @inbounds @showprogress for i in iter_list
         @inbounds for j in iter_list
-            push!(ab,raster_difference(i, j))
+            push!(ab,spike_train_difference(i, j))
             next!(p)
         end
     end
     ab
 end
-@time ab = speed_me(spike_dict)
+@time ab = applied_spike_diff(spike_dict)
 
 ab = []
 @inline for (indi,i) in spike_dict
@@ -175,11 +131,8 @@ ab = []
         if indi!=indj
             if size(spike_dict[indi])[1]>1
                 if size(spike_dict[indj])[1]>1
-                    #@show(spike_dict[indi])
-                    #@show(spike_dict[indj])
                     push!(ab,raster_difference(spike_dict[indi], spike_dict[indj]))
                     @show(last(ab))
-                    #append!(ab,raster_difference(spike_dict[indi], spike_dict[indj]))
                 end
             end
         end
@@ -234,7 +187,7 @@ config = Dict(
     :split_merge_window => 1.0,
 
 );
-#=
+
 # Initialize all spikes to background process.
 init_assignments = fill(-1, length(spikes))
 
@@ -262,7 +215,9 @@ fig = seq.plot_raster(
     color_cycle=["red", "blue", "yellow", "green","pink","brown"] # colors for each sequence type can be modified.
 )
 fig.set_size_inches([7, 3]);
-=#
+
+
+
 using PyCall
 py"""
 import pyspike
