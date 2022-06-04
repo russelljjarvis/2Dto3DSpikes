@@ -78,16 +78,17 @@ The task may be a bit anologous to the current dipole problem in EEG, where uniq
     <img src="1millionspikes.png" width="400">
 </p>
 
+<h3
 <p align="center">
 
 |
 |
 V
-<h3 Apply Transformation />
 |
 V
-</p>
 
+</p>
+/h3>
 
 ## Event camera
 
