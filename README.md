@@ -81,10 +81,10 @@ The task may be a bit anologous to the current dipole problem in EEG, where uniq
 <h3
 <p align="center">
 
-|
-|
 V
-|
+
+Apply Transformation
+
 V
 
 </p>
