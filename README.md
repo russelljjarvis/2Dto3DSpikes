@@ -1,8 +1,5 @@
 # 2Dto3D spike re-organization and transformation.
 
-<p align="center">
-    <img src="1millionspikes.png" width="600">
-</p>
 
 - [2Dto3D spike re-organization and transformation.](#2dto3d-spike-re-organization-and-transformation)
   - [Getting Started](#getting-started)
@@ -56,11 +53,30 @@ Installs the registered Julia package plots.
 Ultimately this project will need a Project.toml file this is analogous to a
 python requirements.txt file
 
-```
+```bash
 cd julia
 julia
+```
+
+```julia
 include("read_spikes.jl")
 ```
+
+## Problem Statement:
+We want to transform 2D biological spike raster plots to 3D spiking event based timeseries much like what is seen from event based cameras. This would be useful for a number of reasons. The main reasons it would be useful to convert 2D spikes to 3D event streams, is because there is a superset of useful neuromorphic algorithms that expects spikes to be formatted as a 3D event stream.
+
+The code task implied by this work involves reorganizing the positions of pre-synaptic cell identifiers and spreading them over rows and columns in a pixel fashion.
+
+The task may be a bit anologous to the current dipole problem in EEG, where unique volumetric activity maps such as voxels are inferred from what was sensed on the surface of the brain, in this way 2D signals are transformed onto a 3D space. 
+
+
+
+## Classic Biological Spike Raster Plot.
+
+
+<p align="center">
+    <img src="1millionspikes.png" width="400">
+</p>
 
 ## Event camera
 
