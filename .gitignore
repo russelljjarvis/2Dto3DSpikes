@@ -1,0 +1,5 @@
+__pycache__
+event_camera/*.es
+event_camera/*.json
+event_camera/*.png
+event_camera/*.mp4
