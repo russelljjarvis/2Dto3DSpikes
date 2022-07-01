@@ -5,7 +5,6 @@ ENV LANG=C.UTF-8
 USER root
 RUN  apt-get update && \
      apt-get install git software-properties-common curl wget libcairo2 libpango1.0-0 -y && \
-     add-apt-repository ppa:staticfloat/julia-deps -y && \
      apt-get update -y && \
      apt-get install -y libpcre3-dev build-essential && \
      apt-get install -y gettext hdf5-tools && \
