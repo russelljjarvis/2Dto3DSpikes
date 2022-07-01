@@ -141,3 +141,7 @@ sudo apt install ffmpeg # macOS: brew install ffmpeg
 # from the command_line_tools directory
 python3 render.py /path/to/input.es
 ```
+
+TODO:
+* unshuffle
+Using sort.py matrix self-similarity maximising, sorting algorithm. 
